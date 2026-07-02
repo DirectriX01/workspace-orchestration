@@ -1,0 +1,92 @@
+[
+  {
+    "id": "file_001",
+    "name": "Acme Corp Proposal v3.docx",
+    "mime_type": "application/vnd.google-apps.document",
+    "owner_email": "demo@example.com",
+    "content": "Proposal for the Acme Corp partnership covering Q3 deliverables: an 8-week API integration rollout, dedicated onboarding support, and a three-tier usage-based pricing model. Includes a support SLA and a proposed timeline for sign-off ahead of the quarterly review.",
+    "web_link": "https://drive.google.com/file/d/file_001",
+    "days_offset": -7
+  },
+  {
+    "id": "file_002",
+    "name": "Acme Meeting Notes 2026-06.docx",
+    "mime_type": "application/vnd.google-apps.document",
+    "owner_email": "demo@example.com",
+    "content": "Notes from last month's call with Sarah Chen at Acme Corp. Discussed high-level partnership scope, confirmed mutual interest in a Q3 integration timeline, and agreed Acme would draft the first proposal for review.",
+    "web_link": "https://drive.google.com/file/d/file_002",
+    "days_offset": -14
+  },
+  {
+    "id": "file_003",
+    "name": "Q3 Budget.xlsx",
+    "mime_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "owner_email": "finance@company.com",
+    "content": "Q3 budget breakdown by department. Engineering line item increased by 2 FTEs, new allocation added for the Acme Corp partnership integration costs, travel and offsite budget held flat versus Q2.",
+    "web_link": "https://drive.google.com/file/d/file_003",
+    "days_offset": -6
+  },
+  {
+    "id": "file_004",
+    "name": "Out of Office - July.docx",
+    "mime_type": "application/vnd.google-apps.document",
+    "owner_email": "demo@example.com",
+    "content": "Out of office notice: I will be away and largely unreachable starting in 6 days through 8 days from now. Please direct urgent matters to John Miller during this window. Will respond to non-urgent email upon return.",
+    "web_link": "https://drive.google.com/file/d/file_004",
+    "days_offset": -3
+  },
+  {
+    "id": "file_005",
+    "name": "Istanbul trip itinerary.pdf",
+    "mime_type": "application/pdf",
+    "owner_email": "demo@example.com",
+    "content": "Trip itinerary for Istanbul. Flight TK1234 departing Istanbul (IST) for New York (JFK), PNR TK-ABC123. Hotel: Bosphorus View Hotel, 2 nights, check-in prior to departure, walking distance from Sultanahmet district.",
+    "web_link": "https://drive.google.com/file/d/file_005",
+    "days_offset": -9
+  },
+  {
+    "id": "file_006",
+    "name": "2025 Tax documents",
+    "mime_type": "application/vnd.google-apps.folder",
+    "owner_email": "demo@example.com",
+    "content": "Folder containing 2025 tax documents including income statements and deduction receipts.",
+    "web_link": "https://drive.google.com/drive/folders/file_006",
+    "days_offset": -60
+  },
+  {
+    "id": "file_007",
+    "name": "Team offsite photos",
+    "mime_type": "application/vnd.google-apps.folder",
+    "owner_email": "demo@example.com",
+    "content": "Folder with photos from the last team offsite, shared with the wider team.",
+    "web_link": "https://drive.google.com/drive/folders/file_007",
+    "days_offset": -50
+  },
+  {
+    "id": "file_008",
+    "name": "Onboarding checklist.pdf",
+    "mime_type": "application/pdf",
+    "owner_email": "demo@example.com",
+    "content": "Checklist for new hire onboarding covering account provisioning, laptop setup, VPN configuration, and first-week orientation schedule.",
+    "web_link": "https://drive.google.com/file/d/file_008",
+    "days_offset": -40
+  },
+  {
+    "id": "file_009",
+    "name": "Marketing deck Q2.pptx",
+    "mime_type": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    "owner_email": "demo@example.com",
+    "content": "Q2 marketing performance deck covering campaign results, channel spend breakdown, and lead generation metrics for the quarter.",
+    "web_link": "https://drive.google.com/file/d/file_009",
+    "days_offset": -35
+  },
+  {
+    "id": "file_010",
+    "name": "Personal reading list.docx",
+    "mime_type": "application/vnd.google-apps.document",
+    "owner_email": "demo@example.com",
+    "content": "A running list of books and articles to read, organized by topic including distributed systems, product management, and travel writing.",
+    "web_link": "https://drive.google.com/file/d/file_010",
+    "days_offset": -60
+  }
+]

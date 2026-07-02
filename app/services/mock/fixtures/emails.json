@@ -1,0 +1,200 @@
+[
+  {
+    "id": "msg_001",
+    "thread_id": "thr_tk1234",
+    "subject": "Your Turkish Airlines Booking Confirmation - TK1234",
+    "from_name": "Turkish Airlines Reservations",
+    "from_email": "reservations@turkishairlines.com",
+    "to": ["demo@example.com"],
+    "labels": ["INBOX"],
+    "body": "Dear Demo User,\n\nThank you for choosing Turkish Airlines. Your booking is confirmed.\n\nBooking reference (PNR): TK-ABC123\nE-ticket number: 235-4498217603\n\nFlight details:\nFlight TK1234\nIstanbul (IST) -> New York (JFK)\nDeparture: 10:30 local time\nClass: Economy\nPassenger: Demo User\nSeat: 24C\n\nPlease arrive at Istanbul Airport at least 3 hours before departure for international check-in. You can check in online starting 24 hours before your flight at turkishairlines.com or via the Turkish Airlines mobile app.\n\nBaggage allowance: 1 checked bag up to 23kg, 1 cabin bag up to 8kg.\n\nIf you need to make changes to your booking, please visit Manage Booking on our website and enter your PNR TK-ABC123.\n\nWe look forward to welcoming you on board.\n\nTurkish Airlines Reservations Team",
+    "days_offset": -10
+  },
+  {
+    "id": "msg_002",
+    "thread_id": "thr_tk_promo",
+    "subject": "Fly to 300+ destinations - Summer sale",
+    "from_name": "Turkish Airlines Offers",
+    "from_email": "promo@turkishairlines.com",
+    "to": ["demo@example.com"],
+    "labels": ["INBOX", "CATEGORY_PROMOTIONS"],
+    "body": "Summer is here and so are our best fares of the season!\n\nDiscover Turkish Airlines' network of 300+ destinations across 6 continents. Book now and save up to 20% on select routes departing from Istanbul.\n\nHighlights:\n- Nonstop flights to over 40 European cities\n- New seasonal routes to the Mediterranean coast\n- Miles&Smiles members earn double miles this month\n\nSale ends soon. Fares shown are round trip, taxes and fees included. Terms and conditions apply.\n\nExplore destinations and book at turkishairlines.com.\n\nHappy travels,\nTurkish Airlines",
+    "days_offset": -5
+  },
+  {
+    "id": "msg_003",
+    "thread_id": "thr_acme",
+    "subject": "Excited to kick off our partnership",
+    "from_name": "Sarah Chen",
+    "from_email": "sarah@acmecorp.com",
+    "to": ["demo@example.com"],
+    "labels": ["INBOX"],
+    "body": "Hi,\n\nI'm Sarah Chen, VP of Partnerships at Acme Corp. It was great connecting last week, and I'm excited to formally kick off our partnership discussions.\n\nOn our end, the goal is to put together a proposal that covers integration scope, timeline, and commercial terms for Q3. I'll start pulling together a first draft over the next couple of weeks and will loop you in for feedback before we finalize anything.\n\nIn the meantime, let me know if there's anyone else on your side I should be looping in, or any specific priorities you'd like the proposal to address.\n\nLooking forward to working together.\n\nBest,\nSarah Chen\nVP Partnerships, Acme Corp",
+    "days_offset": -21
+  },
+  {
+    "id": "msg_004",
+    "thread_id": "thr_acme",
+    "subject": "Re: Acme Corp partnership - Q3 proposal",
+    "from_name": "Sarah Chen",
+    "from_email": "sarah@acmecorp.com",
+    "to": ["demo@example.com"],
+    "labels": ["INBOX"],
+    "body": "Hi,\n\nFollowing up on our kickoff conversation - I've put together the first full draft of the Q3 proposal, attached as \"Acme Corp Proposal v3\".\n\nA few things I'd like your eyes on specifically:\n1. The integration timeline in section 2 - is 8 weeks realistic on your side?\n2. The pricing tiers in section 4 - we landed on three tiers based on usage volume.\n3. The support SLA language in section 5.\n\nIf everything looks reasonable, I'd like to walk through it together and get sign-off before end of quarter. Let me know your availability.\n\nThanks,\nSarah",
+    "days_offset": -7
+  },
+  {
+    "id": "msg_005",
+    "thread_id": "thr_acme",
+    "subject": "Agenda for tomorrow's Quarterly Review",
+    "from_name": "Sarah Chen",
+    "from_email": "sarah@acmecorp.com",
+    "to": ["demo@example.com"],
+    "labels": ["INBOX"],
+    "body": "Hi,\n\nLooking forward to the Quarterly Review tomorrow. Here's the agenda I'd like to cover:\n\n1. Q3 proposal sign-off - finalize scope and pricing\n2. Budget review - confirm allocation for the integration work\n3. Timeline - lock the 8-week rollout plan and key milestones\n4. Next steps - assign owners and set the next check-in date\n\nShould take about an hour. Let me know if you'd like to add anything else.\n\nSee you then,\nSarah",
+    "days_offset": -1
+  },
+  {
+    "id": "msg_006",
+    "thread_id": "thr_sprint_planning",
+    "subject": "Sprint planning notes",
+    "from_name": "John Miller",
+    "from_email": "john@company.com",
+    "to": ["demo@example.com"],
+    "labels": ["INBOX"],
+    "body": "Hey,\n\nNotes from today's sprint planning:\n\n- Carrying over the search relevance work from last sprint, should wrap by Wednesday\n- New ticket for the API integration timeline with Acme - needs an estimate\n- Auth service migration is blocked on the infra team, following up separately\n- Two bugs from QA triaged as high priority, assigned to me\n\nLet me know if I mis-captured anything from your side.\n\nJohn",
+    "days_offset": -4
+  },
+  {
+    "id": "msg_007",
+    "thread_id": "thr_api_timeline",
+    "subject": "Re: API integration timeline",
+    "from_name": "John Miller",
+    "from_email": "john@company.com",
+    "to": ["demo@example.com"],
+    "labels": ["INBOX"],
+    "body": "Hey,\n\nCircling back on this - do we have firm dates yet for the API integration work? Sarah's team is asking because it feeds into the proposal timeline they're finalizing.\n\nIf we can get a start date and rough estimate for the milestones, I can block time on the engineering side and get a kickoff on the calendar.\n\nThanks,\nJohn",
+    "days_offset": -2
+  },
+  {
+    "id": "msg_008",
+    "thread_id": "thr_q3_budget",
+    "subject": "Q3 Budget approval needed",
+    "from_name": "Finance Team",
+    "from_email": "finance@company.com",
+    "to": ["demo@example.com"],
+    "labels": ["INBOX"],
+    "body": "Hi,\n\nThe Q3 Budget.xlsx spreadsheet is ready for your review and approval. Key items to note:\n\n- Engineering headcount allocation increased by 2 FTEs\n- New line item for the Acme Corp partnership integration costs\n- Travel and offsite budget flat vs. Q2\n\nPlease review the attached spreadsheet and confirm approval by end of week so we can lock the numbers before the quarterly review.\n\nThanks,\nFinance Team",
+    "days_offset": -6
+  },
+  {
+    "id": "msg_009",
+    "thread_id": "thr_github_notif",
+    "subject": "[org/repo] Pull request #482: fix retry backoff in worker pool",
+    "from_name": "GitHub",
+    "from_email": "notifications@github.com",
+    "to": ["demo@example.com"],
+    "labels": ["INBOX", "CATEGORY_UPDATES"],
+    "body": "alex-dev requested your review on pull request #482 in org/repo.\n\nfix retry backoff in worker pool\n\nThis PR fixes an issue where the exponential backoff in the worker pool was resetting incorrectly after a partial failure, causing excessive retries under load.\n\nView the pull request to leave a review or merge.\n\nYou are receiving this because your review was requested.",
+    "days_offset": -3
+  },
+  {
+    "id": "msg_010",
+    "thread_id": "thr_linkedin_digest",
+    "subject": "Your weekly LinkedIn digest: 12 new updates from your network",
+    "from_name": "LinkedIn",
+    "from_email": "messages-noreply@linkedin.com",
+    "to": ["demo@example.com"],
+    "labels": ["INBOX", "CATEGORY_PROMOTIONS"],
+    "body": "Here's what's happening in your network this week:\n\n- 3 connections started new positions\n- 5 posts about \"AI agents in production\" trending among people you follow\n- 2 companies you follow are hiring\n- 1 connection celebrated a work anniversary\n\nStay in touch and see what's new by visiting your LinkedIn feed.\n\nYou are receiving this email because you're subscribed to network updates.",
+    "days_offset": -8
+  },
+  {
+    "id": "msg_011",
+    "thread_id": "thr_aws_billing",
+    "subject": "Your AWS bill for last month is ready",
+    "from_name": "AWS Billing",
+    "from_email": "no-reply@aws.amazon.com",
+    "to": ["demo@example.com"],
+    "labels": ["INBOX"],
+    "body": "Your AWS statement for the previous billing period is now available.\n\nTotal amount due: $184.32\nAccount: 4521-8890-1123\n\nCharges breakdown:\n- EC2 instances: $96.50\n- S3 storage: $22.10\n- RDS: $54.72\n- Data transfer: $11.00\n\nView your detailed billing statement and invoice in the AWS Billing Console.\n\nThis is an automated message, please do not reply.",
+    "days_offset": -12
+  },
+  {
+    "id": "msg_012",
+    "thread_id": "thr_hr_allhands",
+    "subject": "All-hands meeting next Friday + new benefits rollout",
+    "from_name": "People Team",
+    "from_email": "hr@company.com",
+    "to": ["demo@example.com"],
+    "labels": ["INBOX"],
+    "body": "Hi everyone,\n\nA couple of updates:\n\n1. All-hands meeting is next Friday at 4pm. We'll cover the Q2 wrap-up, product roadmap highlights, and a Q&A with leadership.\n2. New benefits enrollment window opens Monday - updated dental and vision plans are now available. Details in the benefits portal.\n\nSee you at the all-hands!\n\nPeople Team",
+    "days_offset": -15
+  },
+  {
+    "id": "msg_013",
+    "thread_id": "thr_food_receipt",
+    "subject": "Your order from Spice Route has been delivered",
+    "from_name": "FoodExpress",
+    "from_email": "receipts@foodexpress.com",
+    "to": ["demo@example.com"],
+    "labels": ["INBOX"],
+    "body": "Your order has been delivered. Thanks for ordering with FoodExpress!\n\nOrder #FE-88213\nRestaurant: Spice Route\n\n1x Chicken Biryani - 320.00\n1x Garlic Naan - 60.00\n1x Sweet Lassi - 90.00\nDelivery fee - 30.00\nTotal - 500.00\n\nRate your order and reorder your favorites anytime in the app.\n\nThanks for choosing FoodExpress!",
+    "days_offset": -1
+  },
+  {
+    "id": "msg_014",
+    "thread_id": "thr_gdocs_comment",
+    "subject": "priya commented on \"Onboarding checklist\"",
+    "from_name": "Google Docs",
+    "from_email": "comments-noreply@docs.google.com",
+    "to": ["demo@example.com"],
+    "labels": ["INBOX"],
+    "body": "priya@company.com commented on a document you have access to:\n\n\"Onboarding checklist\"\n\n\"Can we add a step for setting up the VPN before the laptop provisioning section? New hires keep getting stuck here.\"\n\nOpen the document to reply to this comment.",
+    "days_offset": -18
+  },
+  {
+    "id": "msg_015",
+    "thread_id": "thr_cfp",
+    "subject": "Call for Proposals: DevSummit 2026 is now open",
+    "from_name": "DevSummit Organizers",
+    "from_email": "cfp@devsummit.io",
+    "to": ["demo@example.com"],
+    "labels": ["INBOX", "CATEGORY_PROMOTIONS"],
+    "body": "The call for proposals for DevSummit 2026 is officially open!\n\nWe're looking for talks on distributed systems, developer tooling, AI-assisted engineering, and platform reliability. Selected speakers receive a free conference pass and travel stipend.\n\nSubmission deadline: 6 weeks from today.\n\nSubmit your talk abstract (250 words or less) through our CFP portal.\n\nWe can't wait to see what you're working on.\n\nDevSummit Organizing Committee",
+    "days_offset": -25
+  },
+  {
+    "id": "msg_016",
+    "thread_id": "thr_password_reset",
+    "subject": "Reset your password",
+    "from_name": "Account Security",
+    "from_email": "security@cloudservice.com",
+    "to": ["demo@example.com"],
+    "labels": ["INBOX"],
+    "body": "We received a request to reset the password for your account.\n\nIf you made this request, click the link below to choose a new password. This link will expire in 30 minutes.\n\nIf you didn't request a password reset, you can safely ignore this email - your password will not be changed.\n\nFor security reasons, this request was logged with the IP address and timestamp of the request.\n\nAccount Security Team",
+    "days_offset": -2
+  },
+  {
+    "id": "msg_017",
+    "thread_id": "thr_saas_invoice",
+    "subject": "Your invoice from ProjectFlow is ready",
+    "from_name": "ProjectFlow Billing",
+    "from_email": "billing@projectflow.com",
+    "to": ["demo@example.com"],
+    "labels": ["INBOX"],
+    "body": "Thanks for being a ProjectFlow customer. Your invoice for this billing cycle is attached.\n\nInvoice number: PF-20394\nPlan: Team (12 seats)\nAmount charged: $228.00\nPayment method: Visa ending in 4471\n\nYour subscription will automatically renew next month unless canceled. You can manage your subscription anytime from your account settings.\n\nQuestions about your bill? Reply to this email or visit our help center.\n\nProjectFlow Billing Team",
+    "days_offset": -20
+  },
+  {
+    "id": "msg_018",
+    "thread_id": "thr_team_lunch",
+    "subject": "Team lunch this Thursday?",
+    "from_name": "Maria Gomez",
+    "from_email": "maria@company.com",
+    "to": ["demo@example.com", "john@company.com"],
+    "labels": ["INBOX"],
+    "body": "Hey folks,\n\nIt's been a while since we all got lunch together. Thinking Thursday around 12:30 at the new ramen place near the office. Let me know if that works or if another day is better.\n\nCan add more people if you want to invite others from the team.\n\nMaria",
+    "days_offset": -9
+  }
+]
