@@ -44,28 +44,23 @@ services:
       EMBEDDINGS_PROVIDER: ${EMBEDDINGS_PROVIDER:-openai}
       MOCK_GOOGLE: ${MOCK_GOOGLE:-true}
 
-  # The Celery worker is disabled in this phase: the app.sync.celery_app module
-  # does not exist yet (and celery is not yet a dependency), so the service
-  # would fail on startup and, with `restart: on-failure`, crash-loop. It is
-  # re-enabled in the later phase that adds the app/sync package and its Celery
-  # dependency. Keep the definition here for reference.
-  # worker:
-  #   build: .
-  #   command: celery -A app.sync.celery_app worker --loglevel=info
-  #   depends_on:
-  #     db:
-  #       condition: service_healthy
-  #     redis:
-  #       condition: service_healthy
-  #   environment:
-  #     DATABASE_URL: postgresql+asyncpg://postgres:postgres@db:5432/orchestrator
-  #     SYNC_DATABASE_URL: postgresql+psycopg://postgres:postgres@db:5432/orchestrator
-  #     REDIS_URL: redis://redis:6379/0
-  #     OPENAI_API_KEY: ${OPENAI_API_KEY:-}
-  #     LLM_PROVIDER: ${LLM_PROVIDER:-openai}
-  #     EMBEDDINGS_PROVIDER: ${EMBEDDINGS_PROVIDER:-openai}
-  #     MOCK_GOOGLE: ${MOCK_GOOGLE:-true}
-  #   restart: on-failure
+  worker:
+    build: .
+    command: celery -A app.sync.celery_app worker --loglevel=info
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@db:5432/orchestrator
+      SYNC_DATABASE_URL: postgresql+psycopg://postgres:postgres@db:5432/orchestrator
+      REDIS_URL: redis://redis:6379/0
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      LLM_PROVIDER: ${LLM_PROVIDER:-openai}
+      EMBEDDINGS_PROVIDER: ${EMBEDDINGS_PROVIDER:-openai}
+      MOCK_GOOGLE: ${MOCK_GOOGLE:-true}
+    restart: on-failure
 
 volumes:
   db_data:
