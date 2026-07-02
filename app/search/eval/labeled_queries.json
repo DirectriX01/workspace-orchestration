@@ -1,0 +1,92 @@
+[
+  {
+    "query": "turkish airlines flight booking confirmation",
+    "source": "gmail",
+    "filters": {},
+    "relevant_ids": ["msg_001"]
+  },
+  {
+    "query": "acme corp partnership proposal",
+    "source": "gmail",
+    "filters": {},
+    "relevant_ids": ["msg_003", "msg_004", "msg_005"]
+  },
+  {
+    "query": "q3 budget approval",
+    "source": "gmail",
+    "filters": {},
+    "relevant_ids": ["msg_008"]
+  },
+  {
+    "query": "sprint planning engineering notes",
+    "source": "gmail",
+    "filters": {},
+    "relevant_ids": ["msg_006"]
+  },
+  {
+    "query": "partnership proposal",
+    "source": "gmail",
+    "filters": {"from_email": "sarah@acmecorp.com"},
+    "relevant_ids": ["msg_003", "msg_004", "msg_005"]
+  },
+  {
+    "query": "aws monthly bill charges",
+    "source": "gmail",
+    "filters": {},
+    "relevant_ids": ["msg_011"]
+  },
+  {
+    "query": "team lunch thursday ramen",
+    "source": "gmail",
+    "filters": {},
+    "relevant_ids": ["msg_018"]
+  },
+  {
+    "query": "flight to new york",
+    "source": "gcal",
+    "filters": {},
+    "relevant_ids": ["evt_001"]
+  },
+  {
+    "query": "acme quarterly review",
+    "source": "gcal",
+    "filters": {},
+    "relevant_ids": ["evt_002"]
+  },
+  {
+    "query": "sync with john",
+    "source": "gcal",
+    "filters": {"attendee": "john@company.com"},
+    "relevant_ids": ["evt_005", "evt_006"]
+  },
+  {
+    "query": "acme proposal document",
+    "source": "gdrive",
+    "filters": {},
+    "relevant_ids": ["file_001"]
+  },
+  {
+    "query": "out of office",
+    "source": "gdrive",
+    "filters": {},
+    "relevant_ids": ["file_004"]
+  },
+  {
+    "query": "istanbul trip",
+    "source": "gdrive",
+    "filters": {},
+    "relevant_ids": ["file_005"]
+  },
+  {
+    "query": "onboarding checklist",
+    "source": "gdrive",
+    "filters": {"mime_type": "application/pdf"},
+    "relevant_ids": ["file_008"]
+  },
+  {
+    "query": "q3 budget spreadsheet",
+    "source": "gdrive",
+    "filters": {},
+    "relevant_ids": ["file_003"]
+  }
+]
