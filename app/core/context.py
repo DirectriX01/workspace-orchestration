@@ -33,18 +33,24 @@ class ConversationStore:
         redis: A ``redis.asyncio.Redis`` client (or any object exposing the
             same async ``lpush``/``lrange``/``ltrim``/``get``/``set``/
             ``delete``/``expire`` methods).
+        scope: Optional owner identifier (e.g. a user id). When set, keys are
+            namespaced by it so that a conversation id is only ever resolved
+            within its owner's namespace — a caller supplying another owner's
+            conversation id cannot read that history or fire its pending action.
     """
 
-    def __init__(self, redis: Any) -> None:
+    def __init__(self, redis: Any, scope: str | None = None) -> None:
         self._redis = redis
+        self._scope = scope
 
-    @staticmethod
-    def _turns_key(conversation_id: str) -> str:
-        return f"conv:{conversation_id}:turns"
+    def _prefix(self) -> str:
+        return f"u:{self._scope}:" if self._scope else ""
 
-    @staticmethod
-    def _pending_key(conversation_id: str) -> str:
-        return f"conv:{conversation_id}:pending"
+    def _turns_key(self, conversation_id: str) -> str:
+        return f"{self._prefix()}conv:{conversation_id}:turns"
+
+    def _pending_key(self, conversation_id: str) -> str:
+        return f"{self._prefix()}conv:{conversation_id}:pending"
 
     async def get_turns(self, conversation_id: str) -> list[dict]:
         """Return up to the five most recent turns, oldest-first."""
