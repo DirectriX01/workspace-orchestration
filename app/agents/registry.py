@@ -10,12 +10,14 @@ from __future__ import annotations
 
 from typing import Any
 
+import redis.asyncio as aioredis
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.agents.base import AgentDeps, BaseAgent
 from app.agents.calendar_agent import CalendarAgent
 from app.agents.drive_agent import DriveAgent
 from app.agents.gmail_agent import GmailAgent
+from app.config import get_settings
 from app.search.embeddings import EmbeddingService
 from app.search.hybrid import HybridSearcher
 from app.services.factory import (
@@ -25,11 +27,24 @@ from app.services.factory import (
 )
 
 
+def _embedding_redis() -> Any:
+    """A binary-safe async Redis client for the embedding cache.
+
+    :class:`EmbeddingService` stores embeddings as raw float32 bytes, so its
+    Redis client MUST be binary-safe (``decode_responses=False``). The shared
+    ``app.state.redis`` client is created with ``decode_responses=True`` (for
+    pub/sub and the conversation store), which would raise ``UnicodeDecodeError``
+    when the cached bytes are read back. A dedicated binary-safe client, created
+    on the running loop, keeps the embedding cache correct.
+    """
+    return aioredis.from_url(get_settings().redis_url)
+
+
 async def build_agents(
     user: Any, session: AsyncSession, redis_async: Any
 ) -> dict[str, BaseAgent]:
     """Construct the gmail/calendar/drive agents for ``user``."""
-    embedder = EmbeddingService(redis_async=redis_async)
+    embedder = EmbeddingService(redis_async=_embedding_redis())
     searcher = HybridSearcher(session, embedder)
     return {
         "gmail": GmailAgent(

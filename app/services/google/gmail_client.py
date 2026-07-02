@@ -178,6 +178,7 @@ class GmailClient:
             "status": "sent",
             "to": list(to),
             "subject": subject,
+            "body": body,
         }
 
     async def create_draft(self, to: list[str], subject: str, body: str) -> dict:
@@ -199,6 +200,9 @@ class GmailClient:
             "status": "drafted",
             "to": list(to),
             "subject": subject,
+            # Echo the drafted body so the pipeline can carry it into the
+            # confirmable send params; the Gmail API does not return it.
+            "body": body,
         }
 
     async def update_labels(
