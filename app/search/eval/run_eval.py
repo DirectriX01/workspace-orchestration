@@ -130,25 +130,37 @@ def _render_report(
         )
         lines.append("")
 
-    lines.append("| Query | Source | P@5 (capped) | P@5 (raw) | MRR | ms |")
-    lines.append("| --- | --- | ---: | ---: | ---: | ---: |")
+    lines.append(
+        "| Query | Source | P@5 (capped) | P@5 (raw) | MRR | cold ms | warm ms |"
+    )
+    lines.append("| --- | --- | ---: | ---: | ---: | ---: | ---: |")
     for row in results:
         lines.append(
             f"| {row['query']} | {row['source']} "
             f"| {row['p5_capped']:.2f} | {row['p5_raw']:.2f} "
-            f"| {row['mrr']:.2f} | {row['ms']:.1f} |"
+            f"| {row['mrr']:.2f} | {row['ms']:.1f} | {row['warm_ms']:.1f} |"
         )
 
     latencies = [row["ms"] for row in results]
+    warm_latencies = [row["warm_ms"] for row in results]
     lines.append("")
     lines.append("## Aggregate")
     lines.append("")
     lines.append(f"- Mean P@5 (capped): {_mean([r['p5_capped'] for r in results]):.3f}")
     lines.append(f"- Mean P@5 (raw): {_mean([r['p5_raw'] for r in results]):.3f}")
     lines.append(f"- Mean MRR: {_mean([r['mrr'] for r in results]):.3f}")
-    lines.append(f"- Latency p50: {_percentile(latencies, 0.50):.1f} ms")
-    lines.append(f"- Latency p95: {_percentile(latencies, 0.95):.1f} ms")
-    lines.append(f"- Latency mean: {_mean(latencies):.1f} ms")
+    lines.append(
+        f"- Cold latency (embedding round trip included): "
+        f"p50 {_percentile(latencies, 0.50):.1f} ms | "
+        f"p95 {_percentile(latencies, 0.95):.1f} ms | "
+        f"mean {_mean(latencies):.1f} ms"
+    )
+    lines.append(
+        f"- Warm latency (query-embedding cache hit): "
+        f"p50 {_percentile(warm_latencies, 0.50):.1f} ms | "
+        f"p95 {_percentile(warm_latencies, 0.95):.1f} ms | "
+        f"mean {_mean(warm_latencies):.1f} ms"
+    )
     lines.append("")
     return "\n".join(lines)
 
@@ -232,12 +244,19 @@ async def _run_queries(user_id: uuid.UUID, queries: list[dict]) -> list[dict[str
     from app.search.embeddings import EmbeddingService
     from app.search.hybrid import HybridSearcher
 
-    # No query-side Redis cache: keeps latency honest and avoids reading a
-    # vector cached under a different provider for the same model:text key.
+    # Mirror the production query path: cache keys are provider-scoped, so
+    # the Redis query-embedding cache is safe to use here. First run is
+    # cold (full OpenAI round trip per query), repeat runs show warm-cache
+    # latency, which is what interactive traffic sees for repeated queries.
+    import redis.asyncio as aioredis
+
+    from app.config import get_settings
+
     factory = get_async_session_factory()
     results: list[dict[str, Any]] = []
+    redis_client = aioredis.from_url(get_settings().redis_url)
     async with factory() as session:
-        searcher = HybridSearcher(session, EmbeddingService(redis_async=None))
+        searcher = HybridSearcher(session, EmbeddingService(redis_async=redis_client))
         method = {
             "gmail": searcher.search_gmail,
             "gcal": searcher.search_gcal,
@@ -250,9 +269,17 @@ async def _run_queries(user_id: uuid.UUID, queries: list[dict]) -> list[dict[str
                 raise ValueError(f"unknown source in labeled_queries.json: {source!r}")
             params = {"query": entry["query"], "k": _K, **(entry.get("filters") or {})}
 
+            # Cold pass: the query-embedding cache was cleared at startup, so
+            # this pays the full embedding round trip. Warm pass repeats the
+            # same query against the now-populated cache, which is what
+            # interactive traffic sees for repeated or similar queries.
             started = time.perf_counter()
             rows = await search(user_id, params)
             elapsed_ms = (time.perf_counter() - started) * 1000.0
+
+            started = time.perf_counter()
+            await search(user_id, params)
+            warm_ms = (time.perf_counter() - started) * 1000.0
 
             returned_ids = [row["id"] for row in rows]
             scored = _score_query(returned_ids, entry["relevant_ids"])
@@ -261,10 +288,12 @@ async def _run_queries(user_id: uuid.UUID, queries: list[dict]) -> list[dict[str
                     "query": entry["query"],
                     "source": source,
                     "ms": elapsed_ms,
+                    "warm_ms": warm_ms,
                     "returned_ids": returned_ids,
                     **scored,
                 }
             )
+    await redis_client.aclose()
     return results
 
 

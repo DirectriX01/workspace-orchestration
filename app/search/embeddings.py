@@ -166,7 +166,11 @@ class EmbeddingService:
         return self._sync_client
 
     def _cache_key(self, text: str) -> str:
-        digest = hashlib.sha256(f"{self._model}:{text}".encode()).hexdigest()
+        # Provider is part of the key: fake and real vectors must never
+        # share cache entries for the same model:text pair.
+        digest = hashlib.sha256(
+            f"{self._provider}:{self._model}:{text}".encode()
+        ).hexdigest()
         return f"{CACHE_PREFIX}{digest}"
 
     def _fake_vector(self, text: str) -> list[float]:
