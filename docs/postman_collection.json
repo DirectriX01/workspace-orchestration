@@ -1,0 +1,394 @@
+{
+  "info": {
+    "_postman_id": "f4608176-bee2-402d-91ea-bcc373aa47b5",
+    "name": "Workspace Orchestrator",
+    "description": "Agentic Google Workspace Orchestrator -- FastAPI + pgvector + Redis/Celery, deterministic offline mode (LLM_PROVIDER=fake, EMBEDDINGS_PROVIDER=fake, MOCK_GOOGLE=true). Run 'Trigger Sync (inline)' once to seed the cache from the mock fixtures, then run the showcase queries in order.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "userEmail",
+      "value": "demo@example.com",
+      "type": "string"
+    },
+    {
+      "key": "conversationId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "System",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/healthz",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "healthz"
+              ]
+            },
+            "description": "Liveness probe. Returns {\"status\": \"ok\"} when the API process is up (no DB/Redis dependency)."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Sync",
+      "item": [
+        {
+          "name": "Trigger Sync (inline)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-User-Email",
+                "value": "{{userEmail}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/sync/trigger?inline=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "sync",
+                "trigger"
+              ],
+              "query": [
+                {
+                  "key": "inline",
+                  "value": "true"
+                }
+              ]
+            },
+            "description": "Runs gmail/calendar/drive sync synchronously (mode=\"inline\") for the user identified by X-User-Email, populating the pgvector cache from the mock Google fixtures. Run this once before the showcase queries below so hybrid search has rows to return."
+          },
+          "response": []
+        },
+        {
+          "name": "Sync Status",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-User-Email",
+                "value": "{{userEmail}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/sync/status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "sync",
+                "status"
+              ]
+            },
+            "description": "Per-service (gmail/calendar/drive) sync bookkeeping: status, last_synced_at, items_synced, error."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Showcase Queries",
+      "item": [
+        {
+          "name": "Calendar next week",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-User-Email",
+                "value": "{{userEmail}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"What's on my calendar next week?\",\n  \"conversation_id\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/query",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "query"
+              ]
+            },
+            "description": "calendar_search intent: resolves the 'next week' temporal phrase and lists calendar events."
+          },
+          "response": []
+        },
+        {
+          "name": "Cancel Turkish Airlines flight",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-User-Email",
+                "value": "{{userEmail}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"Cancel my Turkish Airlines flight\",\n  \"conversation_id\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/query",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "query"
+              ]
+            },
+            "description": "flight_cancellation intent: multi-step plan (find_booking -> find_flight_event -> draft_cancellation) that ends in a requires_confirmation send_email pending action. The test script saves the returned conversation_id into the collection variable 'conversationId' for the next request."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "if (body.conversation_id) {",
+                  "    pm.collectionVariables.set(\"conversationId\", body.conversation_id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Yes, send it (confirm)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-User-Email",
+                "value": "{{userEmail}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"yes, send it\",\n  \"conversation_id\": \"{{conversationId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/query",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "query"
+              ]
+            },
+            "description": "confirm_action intent, run in the SAME conversation as 'Cancel Turkish Airlines flight' (via {{conversationId}}): executes the pending send_email action and clears it."
+          },
+          "response": []
+        },
+        {
+          "name": "Move the meeting with John",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-User-Email",
+                "value": "{{userEmail}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"Move the meeting with John\",\n  \"conversation_id\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/query",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "query"
+              ]
+            },
+            "description": "calendar_action intent with no quoted event title: ambiguous mutation, so needs_clarification=true and plan=[] (matches the John/John Doe sync/overlap fixtures evt_005/evt_006)."
+          },
+          "response": []
+        },
+        {
+          "name": "Prepare for tomorrow's Acme meeting",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-User-Email",
+                "value": "{{userEmail}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"Prepare me for tomorrow's meeting with Acme Corp\",\n  \"conversation_id\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/query",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "query"
+              ]
+            },
+            "description": "meeting_prep intent: fans out across gmail/calendar/drive to gather the event, related emails and related files for the Acme thread."
+          },
+          "response": []
+        },
+        {
+          "name": "Find emails from Sarah",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-User-Email",
+                "value": "{{userEmail}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"Find emails from Sarah\",\n  \"conversation_id\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/query",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "query"
+              ]
+            },
+            "description": "email_search intent: read-only Gmail lookup via hybrid search."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Google OAuth Login",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/google",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "google"
+              ]
+            },
+            "description": "Redirects to Google's OAuth consent screen. Returns 400 if GOOGLE_CLIENT_ID/SECRET are not configured -- expected in mock mode (MOCK_GOOGLE=true), which needs no real auth at all."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
