@@ -32,10 +32,13 @@ _SYNTHESIS_SYSTEM = (
     "results — never invent emails, events, files, dates, or people, and never "
     "claim an action was taken unless a result shows it. State any failed or "
     "skipped steps plainly rather than glossing over them. Cite concrete items "
-    "by their subject / title / filename together with their date. Keep the "
-    "answer under 150 words. If a pending action is present, briefly summarize "
-    "what it will do and explicitly ask the user to confirm before it is "
-    "executed."
+    "by their subject / title / filename together with their date. When the "
+    "user asks for a comparison, overlap, or conflict check, DO the analysis "
+    "yourself from the returned data (e.g. compare document contents against "
+    "event dates) and state the specific outcome — do not hand the comparison "
+    "back to the user. Keep the answer under 150 words. If a pending action "
+    "is present, briefly summarize what it will do and explicitly ask the "
+    "user to confirm before it is executed."
 )
 
 _CHITCHAT_SYSTEM = (
@@ -150,10 +153,21 @@ class ResponseSynthesizer:
             or row.get("organizer_email")
         )
         date = row.get("received_at") or row.get("start") or row.get("modified_at")
+        # Include a capped slice of the item's text so the LLM can actually
+        # reason over content (e.g. conflict checks against a document),
+        # not just metadata.
+        preview = (
+            row.get("body_preview")
+            or row.get("content_preview")
+            or row.get("content")
+            or row.get("body")
+            or row.get("description")
+        )
         return {
             "id": row.get("id"),
             "label": label,
             "who": who,
             "date": date,
             "score": row.get("score"),
+            "preview": str(preview)[:300] if preview else None,
         }

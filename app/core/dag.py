@@ -130,6 +130,16 @@ def _resolve_ref(ref: str, results: dict[str, StepResult]) -> Any:
         try:
             if name == "top":
                 current = current["results"][0]
+            elif name.isdigit():
+                # A bare numeric segment (e.g. "step1.0.id", a shape LLM
+                # planners plausibly emit) indexes the step's results list
+                # when walking the top-level data dict, else the current list.
+                container = (
+                    current["results"]
+                    if isinstance(current, dict) and "results" in current
+                    else current
+                )
+                current = container[int(name)]
             elif name:
                 current = current[name]
             for index in indices:

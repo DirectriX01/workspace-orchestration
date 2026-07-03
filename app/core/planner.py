@@ -526,6 +526,12 @@ class QueryPlanner:
             "upstream step's result with the template syntax {{step_id.path}} "
             "(use {{step_id.top.field}} for the first result). depends_on lists "
             "the ids of steps that must run first.\n\n"
+            "Search results expose these fields per row: `id` (ALWAYS use `id` "
+            "for get_/update_/delete_ params, never event_id/file_id/email_id), "
+            "plus subject/title/name, from_email/attendees/owner_email, dates "
+            "as ISO strings, and score. Search steps already return previews "
+            "(body_preview/description/content_preview), so add a get_ step "
+            "only when full content is essential.\n\n"
             f"Canonical actions:\n{_CANONICAL_ACTIONS_DOC}"
         )
         entities = intent.entities.model_dump()

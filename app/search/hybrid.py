@@ -136,6 +136,7 @@ class HybridSearcher:
     def _serialize_gmail(cls, row: GmailCache, score: Any = None) -> dict:
         return {
             "id": row.email_id,
+            "email_id": row.email_id,
             "source": "gmail",
             "thread_id": row.thread_id,
             "subject": row.subject,
@@ -188,6 +189,7 @@ class HybridSearcher:
     def _serialize_gcal(cls, row: GcalCache, score: Any = None) -> dict:
         return {
             "id": row.event_id,
+            "event_id": row.event_id,
             "source": "gcal",
             "title": row.title,
             "description": row.description,
@@ -242,6 +244,7 @@ class HybridSearcher:
     def _serialize_gdrive(cls, row: GdriveCache, score: Any = None) -> dict:
         return {
             "id": row.file_id,
+            "file_id": row.file_id,
             "source": "gdrive",
             "name": row.name,
             "mime_type": row.mime_type,

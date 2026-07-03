@@ -70,13 +70,13 @@ Respond ONLY with the requested structured JSON.
 INTENT TAXONOMY (choose exactly one):
 - email_search: read-only lookup of emails. e.g. "Find emails from Sarah about the budget".
 - email_action: a mutating email operation such as labelling, forwarding, or drafting/sending a reply. e.g. "Archive the newsletter from Stripe".
-- calendar_search: read-only lookup of calendar events. e.g. "What's on my calendar next week?".
+- calendar_search: read-only lookup that needs CALENDAR DATA ONLY. e.g. "What's on my calendar next week?".
 - calendar_action: a mutating calendar operation (create / move / reschedule / cancel an event). e.g. "Move my 3pm to Friday".
 - drive_search: read-only lookup of Drive files. e.g. "Show me the PDFs I got last month".
 - drive_action: a mutating Drive operation (share, move, create folder). e.g. "Share the roadmap doc with Priya".
 - meeting_prep: gather everything needed before an upcoming meeting (the event, related emails, related files). e.g. "Prepare me for tomorrow's meeting with Acme Corp".
 - flight_cancellation: find a flight booking and draft a cancellation. e.g. "Cancel my Turkish Airlines flight".
-- complex_multi_service: an open-ended request spanning services that no single template above covers. e.g. "Summarize everything about the Q3 launch across my mail, calendar, and drive".
+- complex_multi_service: a request that needs data from MORE THAN ONE service combined (and is not meeting_prep or flight_cancellation), even when phrased as a simple lookup. If answering requires reading a document AND checking the calendar, or cross-referencing mail with files, it belongs here. e.g. "Summarize everything about the Q3 launch across my mail, calendar, and drive"; "Find events next week that conflict with my out-of-office doc".
 - confirm_action: the user is approving a previously offered pending action. e.g. "Yes, send it" / "Go ahead" / "Confirm".
 - clarification_reply: the user is answering a clarifying question you asked on the previous turn. e.g. (after "Which meeting?") "The one with John".
 - chitchat: greetings, thanks, or anything unrelated to the workspace. e.g. "Thanks!".
