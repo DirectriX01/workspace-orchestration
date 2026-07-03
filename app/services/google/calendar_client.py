@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from typing import TYPE_CHECKING, Any
 from zoneinfo import ZoneInfo
 
@@ -74,6 +74,16 @@ class CalendarClient:
         events: list[dict] = []
         page_token: str | None = None
         updated_min = updated_after.isoformat() if updated_after is not None else None
+        # Real calendars explode into thousands of instances under
+        # singleEvents=True; without a window the max_results cap fills up
+        # with stale history and upcoming events never sync. Full syncs
+        # therefore window from 30 days back onward; incremental syncs
+        # (updatedMin) already self-limit.
+        time_min = (
+            None
+            if updated_after is not None
+            else (datetime.now(timezone.utc) - timedelta(days=30)).isoformat()
+        )
         while len(events) < max_results:
             remaining = max_results - len(events)
 
@@ -83,9 +93,10 @@ class CalendarClient:
                     .list(
                         calendarId="primary",
                         singleEvents=True,
-                        orderBy="updated",
+                        orderBy="startTime",
                         maxResults=min(batch, 2500),
                         updatedMin=updated_min,
+                        timeMin=time_min,
                         pageToken=token,
                     )
                     .execute()
