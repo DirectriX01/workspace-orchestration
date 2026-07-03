@@ -43,6 +43,9 @@ services:
       LLM_PROVIDER: ${LLM_PROVIDER:-openai}
       EMBEDDINGS_PROVIDER: ${EMBEDDINGS_PROVIDER:-openai}
       MOCK_GOOGLE: ${MOCK_GOOGLE:-true}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+      GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URI:-http://localhost:8000/api/v1/auth/google/callback}
 
   worker:
     build: .
@@ -60,6 +63,9 @@ services:
       LLM_PROVIDER: ${LLM_PROVIDER:-openai}
       EMBEDDINGS_PROVIDER: ${EMBEDDINGS_PROVIDER:-openai}
       MOCK_GOOGLE: ${MOCK_GOOGLE:-true}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+      GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URI:-http://localhost:8000/api/v1/auth/google/callback}
     restart: on-failure
 
 volumes:
