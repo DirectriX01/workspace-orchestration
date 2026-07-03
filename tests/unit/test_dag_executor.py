@@ -461,3 +461,30 @@ def test_execution_plan_defaults() -> None:
     other = ExecutionPlan()
     plan.steps.append(PlanStep(id="s1", agent="gmail", action="search_emails"))
     assert other.steps == []
+
+
+# --------------------------------------------------------------------------- #
+# Tolerant template shapes emitted by LLM-generated plans
+# --------------------------------------------------------------------------- #
+
+
+def _search_result(step_id: str) -> dict[str, StepResult]:
+    data = {"status": "ok", "results": [{"id": "doc_1", "name": "PRD"}, {"id": "doc_2"}]}
+    return {step_id: StepResult(step_id=step_id, status="ok", data=data)}
+
+def test_resolve_params_top_alias() -> None:
+    resolved = resolve_params({"file_id": "{{s1.top.id}}"}, _search_result("s1"))
+    assert resolved["file_id"] == "doc_1"
+
+def test_resolve_params_bare_numeric_index() -> None:
+    resolved = resolve_params({"file_id": "{{s1.0.id}}"}, _search_result("s1"))
+    assert resolved["file_id"] == "doc_1"
+    resolved = resolve_params({"file_id": "{{s1.1.id}}"}, _search_result("s1"))
+    assert resolved["file_id"] == "doc_2"
+
+def test_resolve_params_field_falls_through_to_top_result() -> None:
+    resolved = resolve_params({"file_id": "{{s1.id}}"}, _search_result("s1"))
+    assert resolved["file_id"] == "doc_1"
+    # Data-dict keys still win over the fall-through.
+    resolved = resolve_params({"s": "{{s1.status}}"}, _search_result("s1"))
+    assert resolved["s"] == "ok"

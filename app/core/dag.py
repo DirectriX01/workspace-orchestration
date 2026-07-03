@@ -141,6 +141,16 @@ def _resolve_ref(ref: str, results: dict[str, StepResult]) -> Any:
                 )
                 current = container[int(name)]
             elif name:
+                # Fall through to the first result row when the field is not
+                # on the step's data dict itself ("step1.id" meaning "the id
+                # of what step1 found") — another shape LLM plans emit.
+                if (
+                    isinstance(current, dict)
+                    and name not in current
+                    and isinstance(current.get("results"), list)
+                    and current["results"]
+                ):
+                    current = current["results"][0]
                 current = current[name]
             for index in indices:
                 current = current[index]

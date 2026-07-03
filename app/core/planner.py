@@ -533,6 +533,9 @@ class QueryPlanner:
             "as ISO strings, and score. Search steps already return previews "
             "(body_preview/description/content_preview), so add a get_ step "
             "only when full content is essential.\n\n"
+            "The plan MUST include at least one step for EVERY service listed "
+            "in services_required — the user asked for all of them to be "
+            "consulted.\n\n"
             f"Canonical actions:\n{_CANONICAL_ACTIONS_DOC}"
         )
         entities = intent.entities.model_dump()
@@ -540,6 +543,7 @@ class QueryPlanner:
         user_msg = json.dumps(
             {
                 "entities": entities,
+                "services_required": intent.services,
                 "temporal_phrase": intent.temporal_phrase,
                 "time_range": {"start": start, "end": end},
                 "now": now.isoformat(),
