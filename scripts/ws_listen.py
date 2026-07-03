@@ -22,16 +22,25 @@ import websockets
 
 async def listen(conversation_id: str, host: str) -> None:
     uri = f"ws://{host}/api/v1/ws/{conversation_id}"
-    async with websockets.connect(uri) as ws:
-        print(f"listening on {uri}")
-        async for raw in ws:
-            try:
-                event = json.loads(raw)
-            except json.JSONDecodeError:
-                print(raw)
-                continue
-            stamp = datetime.now().strftime("%H:%M:%S.%f")[:-3]
-            print(f"{stamp}  {event.get('step', '?'):24s} -> {event.get('status', '?')}")
+    while True:
+        try:
+            async with websockets.connect(uri) as ws:
+                print(f"listening on {uri}")
+                async for raw in ws:
+                    try:
+                        event = json.loads(raw)
+                    except json.JSONDecodeError:
+                        print(raw)
+                        continue
+                    stamp = datetime.now().strftime("%H:%M:%S.%f")[:-3]
+                    print(
+                        f"{stamp}  {event.get('step', '?'):24s} -> {event.get('status', '?')}"
+                    )
+        except (websockets.exceptions.WebSocketException, OSError) as exc:
+            # Server restarted (e.g. docker compose recreate) or not up yet:
+            # keep the pane alive and quietly re-attach.
+            print(f"connection lost ({exc.__class__.__name__}); reconnecting in 2s...")
+            await asyncio.sleep(2)
 
 
 def main() -> None:
