@@ -201,10 +201,11 @@ def _build_meeting_prep(
 
     start, end = _range_bounds(time_range)
     if start is None and end is None:
-        # Default to tomorrow, full day, in the user's timezone.
-        day_start = now.replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1)
-        day_end = day_start.replace(hour=23, minute=59, second=59, microsecond=999999)
-        start, end = day_start.isoformat(), day_end.isoformat()
+        # No explicit date ("prepare me for the roadmap meeting"): look at
+        # the coming week, not just tomorrow — the target meeting is simply
+        # the next upcoming match.
+        window_end = now.replace(hour=23, minute=59, second=59, microsecond=999999) + timedelta(days=7)
+        start, end = now.isoformat(), window_end.isoformat()
 
     meeting_params: dict[str, Any] = {"query": topic}
     if start:
